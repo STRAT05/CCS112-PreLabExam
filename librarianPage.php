@@ -107,7 +107,15 @@ $books = $conn->query($sql);
                 echo "<td>" . htmlspecialchars($row["year_published"]) . "</td>";
                 echo "<td>" . htmlspecialchars($row["isbn"]) . "</td>";
                 echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-                echo "<td><a href='editBook.php?id=" . $row["id"] . "'>Edit</a> | <a href='deleteBook.php?id=" . $row["id"] . "' onclick=\"return confirm('Are you sure you want to delete this book?');\">Delete</a></td>";
+                echo "<td>
+                <a href='editBook.php?id=" . $row["id"] . "'>
+                    Edit
+                </a>
+                |
+                <a href='deleteBook.php?id=" . $row["id"] . "' onclick=\"return confirm('Are you sure you want to delete this book?');\">
+                    Delete
+                </a>
+                </td>";
                 echo "</tr>";
             }
         } else {
@@ -122,3 +130,4 @@ $books = $conn->query($sql);
 
 </body>
 </html>
+
