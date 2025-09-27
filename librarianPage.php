@@ -109,7 +109,9 @@ $books = $conn->query($sql);
                 echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
                 echo "<td>
                 <a href='editBook.php?id=" . $row["id"] . "'>
-                    Edit
+                    <button>
+                        Edit
+                    </button>
                 </a>
                 echo "</tr>";
             }
@@ -125,5 +127,6 @@ $books = $conn->query($sql);
 
 </body>
 </html>
+
 
 
