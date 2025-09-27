@@ -113,6 +113,8 @@ $books = $conn->query($sql);
                         Edit
                     </button>
                 </a>
+                |
+                <a href='deleteBook.php?id=" . $row["id"] . "'>
                 echo "</tr>";
             }
         } else {
@@ -127,6 +129,7 @@ $books = $conn->query($sql);
 
 </body>
 </html>
+
 
 
 
