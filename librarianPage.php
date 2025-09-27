@@ -116,6 +116,10 @@ $books = $conn->query($sql);
                 |
                 <a href='deleteBook.php?id=" . $row["id"] . "'
                  onclick=\"return confirm('Are you sure you want to delete this book?');\">
+                     <button> 
+                         Delete
+                     </button>
+                </a>
                 echo "</tr>";
             }
         } else {
@@ -130,6 +134,7 @@ $books = $conn->query($sql);
 
 </body>
 </html>
+
 
 
 
