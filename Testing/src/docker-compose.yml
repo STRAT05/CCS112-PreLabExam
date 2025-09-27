@@ -1,0 +1,37 @@
+services:
+  app:
+    build: .
+    container_name: charlesapp #change
+    ports:
+      - "8083:80" #change
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: charlesdb #change
+    restart: always
+    environment: #change whole
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: zieTestDB
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: pass1
+    ports:
+      - "3308:3306" #change
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: charlespma #change
+    restart: always
+    ports:
+      - "8084:80" #change
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  db_data:
