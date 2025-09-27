@@ -93,7 +93,7 @@ $books = $conn->query($sql);
 <body>
     <header class="header">
          <p id="welcome">
-            Library Management System<br>       
+            Library System<br>       
         </p>
       
 
