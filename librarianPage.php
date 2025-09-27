@@ -82,6 +82,7 @@ $books = $conn->query($sql);
 
     <!-- Search -->
 
+
     <!-- Add Book -->
     <a href="addBook.php"><button id="addBookBtn"> Add Book</button></a>
 
