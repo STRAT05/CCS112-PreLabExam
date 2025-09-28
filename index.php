@@ -6,6 +6,13 @@
     <title>My PHP Page</title>
 
     <style>
+
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0px;
@@ -15,7 +22,7 @@
             text-align: center;
             color: #000000ff;
             background-color: #ffffffff;
-            width:96%;
+            width:100%;
             padding: 30px;
             font-size: 40px;
             border: 5px solid #000000ff;
