@@ -11,9 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
 }
 
 // handle Search
+$searchQuery = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
+    $searchTerm = $conn->real_escape_string($_POST["search"]);
+    $searchQuery = "WHERE title LIKE '%$searchTerm%' OR
+                    author LIKE '%$searchTerm%' OR
+                    year_published LIKE '%$searchTerm%' OR
+                    isbn LIKE '%$searchTerm%'";
+}
 
 // fetch books from the database
-$sql = "SELECT * FROM Books order by id desc";
+$sql = "SELECT * FROM Books $searchQuery order by id desc";
 $books = $conn->query($sql);
 
 ?>
@@ -44,7 +52,12 @@ $books = $conn->query($sql);
             font-size: 28px;
             border-bottom: 5px solid #000000ff;
             border-image: linear-gradient(to right, #071d01ff, #002000ff) 1;
+
         }
+        #headMessage {
+            text-decoration: none
+        }
+
         .buttons {
 
             text-align: center;
@@ -82,19 +95,26 @@ $books = $conn->query($sql);
 
 <body>
     <header class="header">
-         <h1 id="welcome">Library Management System</h1>
-         <!-- Back Button -->
+
+         <a href ="" id="headMessage"><h1 id="welcome">Library Management System</h1></a>
+                                                        
+                                                     <!-- Logout Button -->
     <a href="index.php"><button id="logoutBtn"> Logout</button></a>
-    </header>
-   
-
-    <!-- Search -->
-
-
-    <!-- Add Book -->
+                                                        <!-- Add Book -->
     <a href="addBook.php"><button id="addBookBtn"> Add Book</button></a>
 
-    <!-- Book table -->
+
+    </header>
+                                                        <!-- Search -->
+    <form method="POST" style="text-align:center;">
+        <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" style="width:300px; padding:5px;">
+        <button type="submit" style="padding:5px 10px; border-radius:4px; background:#007bff; color:white; border:none; cursor:pointer;">Search</button>
+    </form>
+
+
+    
+
+                                                        <!-- Book table -->
      <table border="1" style="width:100%; text-align: center; margin-top: 50px;">
         <tr>
             <th>ID</th>
