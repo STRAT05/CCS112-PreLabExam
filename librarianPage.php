@@ -142,8 +142,5 @@ $books = $conn->query($sql);
         $conn->close();
         ?>
           </table>
-
-    
 </body>
-
 </html>
