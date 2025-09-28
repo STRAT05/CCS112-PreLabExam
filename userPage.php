@@ -4,12 +4,18 @@ if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);
 }
 
-//handle remove
-
 // handle Search
+$searchQuery = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
+    $searchTerm = $conn->real_escape_string($_POST["search"]);
+    $searchQuery = "WHERE title LIKE '%$searchTerm%' OR
+                    author LIKE '%$searchTerm%' OR
+                    year_published LIKE '%$searchTerm%' OR
+                    isbn LIKE '%$searchTerm%'";
+}
 
 // fetch books from the database
-$sql = "SELECT * FROM Books order by id desc";
+$sql = "SELECT * FROM Books $searchQuery order by id desc";
 $books = $conn->query($sql);
 
 ?>
@@ -92,19 +98,24 @@ $books = $conn->query($sql);
 
 <body>
     <header class="header">
-         <p id="welcome">
-            Library Management System<br>       
-        </p>
-      
-
-         <!-- Return Book -->
+         <a href="" style="text-decoration: none;">
+            <p id="welcome">
+            Library System<br>       
+            </p>
+        </a>
+                                    <!-- Return Book -->
         <a href="borrowedCatalog.php"><button id="returnBookBtn"> Return Books</button></a>
-         <!-- Back Button -->
+                                    <!-- Back Button -->
         <a href="index.php"><button id="logoutBtn"> Logout</button></a>
+        
     </header>
    
+                                    <!-- Search -->
+         <form method="POST" style="text-align:center;">
+             <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" style="width:300px; padding:5px;">
+             <button type="submit" style="padding:5px 10px; border-radius:4px; background:#007bff; color:white; border:none; cursor:pointer;">Search</button>
 
-    <!-- Search -->
+    
 
 
     <!-- Book table -->

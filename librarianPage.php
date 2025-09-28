@@ -5,11 +5,23 @@ if($conn->connect_error){
 }
 
 //handle remove
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
+    $id = intval($_POST["delete_id"]);
+    $conn->query("DELETE FROM Books WHERE id = $id");
+}
 
 // handle Search
+$searchQuery = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
+    $searchTerm = $conn->real_escape_string($_POST["search"]);
+    $searchQuery = "WHERE title LIKE '%$searchTerm%' OR
+                    author LIKE '%$searchTerm%' OR
+                    year_published LIKE '%$searchTerm%' OR
+                    isbn LIKE '%$searchTerm%'";
+}
 
 // fetch books from the database
-$sql = "SELECT * FROM Books order by id desc";
+$sql = "SELECT * FROM Books $searchQuery order by id desc";
 $books = $conn->query($sql);
 
 ?>
@@ -21,20 +33,31 @@ $books = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librarian Page</title>
     <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0px;
             background-color: #ffffffff;
         }
         #welcome {
-            text-align: center;
+            text-align: left;
             color: #000000ff;
-            background-color: #ffffffff;
-            width:99.35%;
+            background: linear-gradient(to right, #7bf58cff, #1d961dff);
+            width:100%;
             font-size: 28px;
-            border: 5px solid #000000ff;
-            border-image: linear-gradient(to right, #000000ff, #038b03ff) 1;
+            border-bottom: 5px solid #000000ff;
+            border-image: linear-gradient(to right, #071d01ff, #002000ff) 1;
         }
+
+        #headMessage {
+            text-decoration: none;
+        }
+
         .buttons {
 
             text-align: center;
@@ -49,7 +72,6 @@ $books = $conn->query($sql);
             font-weight: bold;
             background-color: #f7c7c7ff;
             border: 2.5px solid #000000ff;
-            top: -18px;
             position: relative;
             float: right; 
         }
@@ -61,7 +83,6 @@ $books = $conn->query($sql);
             font-weight: bold;
             background-color: #c7f7c7ff;
             border: 2.5px solid #000000ff;
-            top: -18px;
             position: relative;
             float: left; 
         }
@@ -74,19 +95,24 @@ $books = $conn->query($sql);
 
 <body>
     <header class="header">
-         <h1 id="welcome">Welcome Librarian</h1>
-         <!-- Back Button -->
+         <a href ="" id="headMessage"><h1 id="welcome">Library Management System</h1></a>
+                                                        <!-- Logout Button -->
     <a href="index.php"><button id="logoutBtn"> Logout</button></a>
-    </header>
-   
-
-    <!-- Search -->
-
-
-    <!-- Add Book -->
+                                                        <!-- Add Book -->
     <a href="addBook.php"><button id="addBookBtn"> Add Book</button></a>
 
-    <!-- Book table -->
+
+    </header>
+                                                        <!-- Search -->
+    <form method="POST" style="text-align:center;">
+        <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" style="width:300px; padding:5px;">
+        <button type="submit" style="padding:5px 10px; border-radius:4px; background:#007bff; color:white; border:none; cursor:pointer;">Search</button>
+    </form>
+
+
+    
+
+                                                        <!-- Book table -->
      <table border="1" style="width:100%; text-align: center; margin-top: 50px;">
         <tr>
             <th>ID</th>
@@ -107,19 +133,25 @@ $books = $conn->query($sql);
                 echo "<td>" . htmlspecialchars($row["year_published"]) . "</td>";
                 echo "<td>" . htmlspecialchars($row["isbn"]) . "</td>";
                 echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-                echo "<td>
-                <a href='editBook.php?id=" . $row["id"] . "'>
-                    <button>
-                        Edit
-                    </button>
-                </a>
-                |
-                <a href='deleteBook.php?id=" . $row["id"] . "'
-                 onclick=\"return confirm('Are you sure you want to delete this book?');\">
-                     <button> 
-                         Delete
-                     </button>
-                </a>
+                echo "<td style='display:flex; gap:5px; justify-content:center;'> 
+                                                 <!-- edit form -->
+        <form method='post' action='editBook.php' style='display:inline;'>
+            <input type='hidden' name='edit_id' value='" . $row["id"] . "'>
+            <button type='submit' 
+                style='background:#4CAF50; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;'>
+                Edit
+            </button>
+        </form>
+
+                                                <!-- delete form -->
+        <form method='post' style='display:inline;' onsubmit=\"return confirm('Are you sure you want to delete this book?');\">
+            <input type='hidden' name='delete_id' value='" . $row["id"] . "'>
+            <button type='submit' 
+                style='background:#f44336; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;'>
+                Delete
+            </button>
+        </form>
+      </td>";
                 echo "</tr>";
             }
         } else {
@@ -130,13 +162,5 @@ $books = $conn->query($sql);
           </table>
 
     
-
-
 </body>
 </html>
-
-
-
-
-
-
