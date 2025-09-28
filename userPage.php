@@ -98,7 +98,6 @@ $books = $conn->query($sql);
 
 <body>
     <header class="header">
-
          <a href="" style="text-decoration: none;">
             <p id="welcome">
             Library System<br>       
@@ -115,7 +114,7 @@ $books = $conn->query($sql);
          <form method="POST" style="text-align:center;">
              <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" style="width:300px; padding:5px;">
              <button type="submit" style="padding:5px 10px; border-radius:4px; background:#007bff; color:white; border:none; cursor:pointer;">Search</button>
-
+        </form>
     
 
 

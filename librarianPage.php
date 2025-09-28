@@ -52,10 +52,10 @@ $books = $conn->query($sql);
             font-size: 28px;
             border-bottom: 5px solid #000000ff;
             border-image: linear-gradient(to right, #071d01ff, #002000ff) 1;
-
         }
+
         #headMessage {
-            text-decoration: none
+            text-decoration: none;
         }
 
         .buttons {
@@ -95,10 +95,8 @@ $books = $conn->query($sql);
 
 <body>
     <header class="header">
-
          <a href ="" id="headMessage"><h1 id="welcome">Library Management System</h1></a>
-                                                        
-                                                     <!-- Logout Button -->
+                                                        <!-- Logout Button -->
     <a href="index.php"><button id="logoutBtn"> Logout</button></a>
                                                         <!-- Add Book -->
     <a href="addBook.php"><button id="addBookBtn"> Add Book</button></a>
@@ -162,5 +160,7 @@ $books = $conn->query($sql);
         $conn->close();
         ?>
           </table>
+
+    
 </body>
 </html>

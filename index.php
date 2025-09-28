@@ -73,7 +73,7 @@
     </div>
 
     <?php
-        // Display the current date and time
+        // Display the current date
         echo '<p id="date">Current date: <b>' . date("Y-m-d") . '</b></p>';
     ?>
 </body>
