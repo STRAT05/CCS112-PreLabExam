@@ -7,7 +7,7 @@ if($conn->connect_error){
 //handle remove
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
     $id = intval($_POST["delete_id"]);
-    $conn->query("DELETE FROM books WHERE id = $id");
+    $conn->query("DELETE FROM Books WHERE id = $id");
 }
 
 // handle Search
@@ -142,7 +142,5 @@ $books = $conn->query($sql);
         $conn->close();
         ?>
           </table>
-
-    
 </body>
 </html>
