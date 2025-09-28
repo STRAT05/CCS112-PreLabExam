@@ -4,57 +4,163 @@ if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);
 }
 
-
-$searchQuery = "";
-if (isset($_GET["query"]) && $_GET["query"] !== "") {
-    $q = $conn->real_escape_string($_GET["query"]);
-    $searchQuery = "WHERE title LIKE '%$q%' OR author LIKE '%$q%'";
-} else {
-    $result = $conn->query("SELECT * FROM Books");
+//handle remove
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
+    $id = intval($_POST["delete_id"]);
+    $conn->query("DELETE FROM Books WHERE id = $id");
 }
+
+// handle Search
+$searchQuery = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
+    $searchTerm = $conn->real_escape_string($_POST["search"]);
+    $searchQuery = "WHERE title LIKE '%$searchTerm%' OR
+                    author LIKE '%$searchTerm%' OR
+                    year_published LIKE '%$searchTerm%' OR
+                    isbn LIKE '%$searchTerm%'";
+}
+
+// fetch books from the database
+$sql = "SELECT * FROM Books $searchQuery order by id desc";
+$books = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Library Search</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Page</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 70%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid black; padding: 8px; }
-        th { background: #f2f2f2; }
-    </style>
-</head>
-<body>
-    <h2>Library - Search Books</h2>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <!-- Search Form -->
-     <form method="GET">
-        <input type="text" name="query" placeholder="Search books..."
-               value="<?php echo isset($_GET['query']) ? htmlspecialchars($_GET['query']) : ''; ?>">
-        <button type="submit">Search</button>
-        <button type="button" onclick="window.location='index.php'">Reset</button>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            background-color: #ffffffff;
+        }
+        #welcome {
+            text-align: left;
+            color: #000000ff;
+            background: linear-gradient(to right, #7bf58cff, #1d961dff);
+            width:100%;
+            font-size: 28px;
+            border-bottom: 5px solid #000000ff;
+            border-image: linear-gradient(to right, #071d01ff, #002000ff) 1;
+        }
+
+        #headMessage {
+            text-decoration: none;
+        }
+
+        .buttons {
+
+            text-align: center;
+
+
+        }
+
+        #logoutBtn {
+            width: 80px;
+            height: 28px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #f7c7c7ff;
+            border: 2.5px solid #000000ff;
+            position: relative;
+            float: right; 
+        }
+
+        #addBookBtn {
+            width: 100px;
+            height: 28px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #c7f7c7ff;
+            border: 2.5px solid #000000ff;
+            position: relative;
+            float: left; 
+        }
+
+        
+
+        
+        </style>
+</head>
+
+<body>
+    <header class="header">
+         <a href ="" id="headMessage"><h1 id="welcome">Library Management System</h1></a>
+                                                        <!-- Logout Button -->
+    <a href="index.php"><button id="logoutBtn"> Logout</button></a>
+                                                        <!-- Add Book -->
+    <a href="addBook.php"><button id="addBookBtn"> Add Book</button></a>
+
+
+    </header>
+                                                        <!-- Search -->
+    <form method="POST" style="text-align:center;">
+        <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" style="width:300px; padding:5px;">
+        <button type="submit" style="padding:5px 10px; border-radius:4px; background:#007bff; color:white; border:none; cursor:pointer;">Search</button>
     </form>
 
-    <?php if (isset($_POST['search'])): ?>
-        <h3>Search Results for "<?php echo $search; ?>"</h3>
-        <?php if ($result->num_rows > 0): ?>
-            <table>
-                <tr>
-                    <th>ID</th><th>Title</th><th>Author</th><th>Status</th>
-                </tr>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo $row['title']; ?></td>
-                    <td><?php echo $row['author']; ?></td>
-                    <td><?php echo $row['status']; ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </table>
-        <?php else: ?>
-            <p>No books found.</p>
-        <?php endif; ?>
-    <?php endif; ?>
+
+    
+
+                                                        <!-- Book table -->
+     <table border="1" style="width:100%; text-align: center; margin-top: 50px;">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year Published</th>
+            <th>ISBN</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <?php
+        if ($books->num_rows > 0) {
+            while($row = $books->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["title"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["year_published"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["isbn"]) . "</td>";
+                echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+                echo "<td style='display:flex; gap:5px; justify-content:center;'> 
+                                                 <!-- edit form -->
+        <form method='post' action='editBook.php' style='display:inline;'>
+            <input type='hidden' name='edit_id' value='" . $row["id"] . "'>
+            <button type='submit' 
+                style='background:#4CAF50; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;'>
+                Edit
+            </button>
+        </form>
+
+                                                <!-- delete form -->
+        <form method='post' style='display:inline;' onsubmit=\"return confirm('Are you sure you want to delete this book?');\">
+            <input type='hidden' name='delete_id' value='" . $row["id"] . "'>
+            <button type='submit' 
+                style='background:#f44336; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;'>
+                Delete
+            </button>
+        </form>
+      </td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='7'>No books found</td></tr>";
+        }
+        $conn->close();
+        ?>
+          </table>
+
+    
 </body>
 </html>
