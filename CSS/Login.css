@@ -1,0 +1,173 @@
+/* Import Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
+/* Color variables */
+:root {
+  --primary: #111;        /* main text color */
+  --secondary: #f5f5f5;   /* page background */
+  --accent: #0070f3;      /* blue accent color */
+  --text-dark: #222;
+  --text-light: #666;
+}
+
+/* Reset and base font */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  background: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Main container */
+.container {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+/* White card box */
+.form-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* Logo text */
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+.logo span {
+  color: var(--accent);
+}
+
+/* Tab buttons (Login / Sign Up) */
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+/* Active tab button */
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* Form sections */
+.tab-content {
+  display: none;
+  text-align: left;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* Form heading */
+h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-dark);
+}
+
+/* Input groups (label + input) */
+.input-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--text-light);
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s ease;
+  font-size: 0.95rem;
+}
+
+/* Input focus effect */
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,112,243,0.15);
+}
+
+/* Forgot password link */
+.forgot-password {
+  text-align: right;
+  margin-bottom: 15px;
+}
+.forgot-password a {
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Main button (Login / Sign Up) */
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: #0059c1;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 480px) {
+  .form-box {
+    padding: 30px 20px;
+  }
+  .logo {
+    font-size: 1.5rem;
+  }
+  .tab-btn {
+    font-size: 0.9rem;
+  }
+}
+

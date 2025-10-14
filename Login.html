@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>DroneX | Account</title>
+                <link rel="stylesheet" href="CSS/Login.css" />
+                <link rel="icon" type="image/png" href="assets/favicon.png">
+        </head>
+    <body>
+
+  <!-- Main container -->
+  <div class="container">
+    <div class="form-box">
+
+      <!-- Logo / Title -->
+      <h1 class="logo">Drone<span>X</span></h1>
+
+      <!-- Tabs (Login and Sign Up buttons) -->
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="signup">Sign Up</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login" class="tab-content active" action="#" method="POST">
+        <h2>Welcome Back</h2>
+        
+        <!-- Email input -->
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="your@email.com" required>
+        </div>
+
+        <!-- Password input -->
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="********" required>
+        </div>
+
+        <!-- Forgot password link -->
+        <div class="forgot-password">
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <!-- Login button -->
+        <button type="submit" class="btn">Login</button>
+      </form>
+
+      <!-- SIGN UP FORM -->
+      <form id="signup" class="tab-content" action="#" method="POST">
+        <h2>Create Your Account</h2>
+
+        <!-- Email input -->
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" placeholder="your@email.com" required>
+        </div>
+
+        <!-- Password input -->
+        <div class="input-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" placeholder="********" required>
+        </div>
+
+        <!-- Confirm password input -->
+        <div class="input-group">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" name="confirm-password" placeholder="********" required>
+        </div>
+
+        <!-- Sign Up button -->
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Small JavaScript for switching tabs -->
+  <script>
+    const tabs = document.querySelectorAll(".tab-btn");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // remove "active" class from all
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+
+        // add "active" to the one clicked
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>

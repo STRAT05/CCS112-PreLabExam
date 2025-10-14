@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: Ecommerce #change
+    ports:
+      - "8083:80" #change
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: EcommerceDB #change
+    restart: always
+    environment: #change whole
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mainDataBase
+      MYSQL_USER: userEcommerce
+      MYSQL_PASSWORD: passEcommerce
+    ports:
+      - "3309:3306" #change
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: EcommercePhpAdmin #change
+    restart: always
+    ports:
+      - "8085:80" #change
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+
+
+volumes:
+  db_data:
